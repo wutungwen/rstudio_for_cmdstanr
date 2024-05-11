@@ -1,0 +1,2 @@
+# rstudio_for_cmdstanr
+cmdstanrがきちんと動作するRとRstudio環境
