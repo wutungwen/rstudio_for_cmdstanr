@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  rstudio:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      USER: rstudio
+      PASSWORD: rstudio
+    container_name: rstudio
+    ports:
+      - '8889:8787'
+    platform: linux/amd64
