@@ -103,6 +103,21 @@ g_trend <- m_mmm_summary |>
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) + 
   ggplot2::labs(title = "アメリカ失業率トレンド")
 
+estimated_state <- m_mmm_summary |> 
+  dplyr::filter(stringr::str_detect(variable, "estimated_state")) |> 
+  dplyr::pull(mean) |> 
+  matrix(ncol = 10) 
+
+used_states <- estimated_state |>
+  nrow() |>
+  seq_len() |>
+  purrr::map_int(
+    \(x){
+      which.max(estimated_state[x,])
+    }
+  ) |>
+  unique()
+
 g_state <- m_mmm_summary |> 
   dplyr::filter(stringr::str_detect(variable, "estimated_state")) |>
   dplyr::mutate(
@@ -124,6 +139,7 @@ g_state <- m_mmm_summary |>
       ),
     by = "id_1"
   ) |>
+  dplyr::filter(id_2 %in% used_states) |>
   ggplot2::ggplot() + 
   ggplot2::geom_line(ggplot2::aes(x = date, y = mean, color = as.factor(id_2))) + 
   ggplot2::geom_ribbon(ggplot2::aes(x = date, ymin = q5, ymax = q95, fill = as.factor(id_2)),
