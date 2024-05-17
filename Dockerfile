@@ -9,9 +9,9 @@ COPY . /home/rstudio
 
 RUN apt-get update -y \
   && apt-get install -y \
-  mecab \
-  libmecab-dev \
-  mecab-ipadic-utf8 \
+  libcairo2-dev \
+  fonts-noto-cjk \ 
+  fonts-noto-cjk-extra \
   git \
   # githubのためのsshキー周り
   openssh-server \
@@ -23,8 +23,6 @@ RUN apt-get update -y \
   locales-all \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-  
-RUN Rscript -e 'install.packages("RMeCab", repos = "http://rmecab.jp/R")'
     
 RUN mkdir -p $HOME/.R/ \ 
   && echo "CXX=clang++ -stdlib=libc++ -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -fsanitize-address-use-after-scope -fno-sanitize=alignment -frtti" >> $HOME/.R/Makevars \
@@ -49,7 +47,7 @@ RUN cd /usr/share/ \
 
 RUN Rscript -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))' 
 
-RUN Rscript -e 'install.packages(c("quanteda", "future", "furrr", "shiny", "plumber", "plotly", "distrom", "stm", "keyATM", "grf"), dependencies = TRUE, Ncpus = parallel::detectCores())'
+RUN Rscript -e 'install.packages(c("tibble", "dplyr", "tidyr", "purrr", "ggplot2", "plotly", "BVAR"), dependencies = TRUE, Ncpus = parallel::detectCores())'
 
 
 ENV LANG ja_JP.UTF-8
