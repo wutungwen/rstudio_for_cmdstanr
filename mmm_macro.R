@@ -28,7 +28,7 @@ fred_data_list <- list(
   outcome = fred_df$UNRATE_normalized
 )
 
-m_mmm_init <- cmdstanr::cmdstan_model("mmm_logistic.stan")
+m_mmm_init <- cmdstanr::cmdstan_model("mmm_dirichlet.stan")
 
 m_mmm_estimate <- m_mmm_init$variational(
   seed = 12345,
