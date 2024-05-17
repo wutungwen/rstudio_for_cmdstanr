@@ -74,7 +74,7 @@ model {
   for (t in 1:train_period){
     vector[P] case_vector;
     for (p in 1:P){
-      case_vector[p] = normal_lpdf(normalized_time[t] | trend_middle_point[p], trend_spread[p]) + 
+      case_vector[p] = normal_lpdf(normalized_time[t] | trend_middle_point[p], trend_spread[p] ^ 2) + 
                        normal_lpdf(outcome[t] | intercept + normalized_time[t] * trend[p] + beta '* adstock[:, t], sigma ^ 2);
     }
     target += log_sum_exp(case_vector);
@@ -94,7 +94,7 @@ generated quantities {
   for (t in 1:time_type){
     vector[P] case_vector;
     for (p in 1:P){
-      case_vector[p] = normal_lpdf(normalized_time[t] | trend_middle_point[p], trend_spread[p]);
+      case_vector[p] = normal_lpdf(normalized_time[t] | trend_middle_point[p], trend_spread[p] ^ 2);
     }
     int state = categorical_rng(softmax(case_vector));
     estimated_state[t, state] = 1.0; 
