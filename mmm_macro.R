@@ -249,17 +249,6 @@ m_mmm_summary |>
 
 
 m_mmm_summary |> 
-  dplyr::filter(stringr::str_detect(variable, "beta\\[")) |>
-  dplyr::mutate(
-    id = purrr::map(
-      variable,
-      \(x){
-        stringr::str_split(x, "\\[|\\]|,")[[1]][2:3] |>
-          as.numeric()
-      }
-    )
-  ) |>
-  tidyr::unnest_wider(id, names_sep = "_") |>
-  ggplot2::ggplot() + 
-  ggplot2::geom_line(ggplot2::aes(x = id_1, y = mean, color = as.factor(id_2)))
+  dplyr::filter(stringr::str_detect(variable, "beta"))
+
 
